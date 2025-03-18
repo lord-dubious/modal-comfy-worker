@@ -44,15 +44,47 @@ except Exception:
 models_to_download = [
     # format is (huggingface repo_id, the model filename, comfyui models subdirectory we want to save the model in)
     (
-        "stabilityai/stable-diffusion-xl-base-1.0",
-        "sd_xl_base_1.0.safetensors",
-        "checkpoints",
+        "comfyanonymous/flux_text_encoders",
+        "t5xxl_fp16.safetensors",
+        "clip",
     ),
     (
-        "stabilityai/stable-diffusion-xl-refiner-1.0",
-        "sd_xl_refiner_1.0.safetensors",
-        "checkpoints",
+        "zer0int/CLIP-GmP-ViT-L-14",
+        "ViT-L-14-BEST-smooth-GmP-TE-only-HF-format.safetensors",
+        "clip",
     ),
+      (
+        "zer0int/CLIP-GmP-ViT-L-14",
+        "ViT-L-14-TEXT-detail-improved-hiT-GmP-TE-only-HF.safetensors",
+        "clip",
+    ),
+
+    (
+        "black-forest-labs/FLUX.1-Redux-dev",
+        "flux1-redux-dev.safetensors",
+        "style_models",
+    ),
+    (
+        "comfyanonymous/flux_RealismLora_converted_comfyui",
+        "flux_realism_lora.safetensors",
+        "loras",
+    ),
+     (
+        "strangerzonehf/Flux-Super-Realism-LoRA",
+        "super-realism.safetensors",
+        "loras",
+    ),
+     (
+        "kudzueye/boreal-flux-dev-v2",
+        "boreal-v2.safetensors",
+        "loras",
+    ),
+    (
+        "city96/FLUX.1-dev-gguf",
+        "flux1-dev-Q8_0.gguf",
+        "unet",
+    ),
+    
 ]
 
 
@@ -82,7 +114,7 @@ image = get_comfy_image(
     container_idle_timeout=60,
     # keep_warm=1,
     retries=1,
-)
+
 class ComfyWorkflow:
     @enter()
     def run_this_on_container_startup(self):
@@ -198,7 +230,7 @@ def asgi_app():
     volumes={"/root/ComfyUI/models": volume},
     container_idle_timeout=30,
     timeout=1800,
-    gpu="l4",
+    gpu="l40s",
 )
 @web_server(8188, startup_timeout=120)
 def ui():
